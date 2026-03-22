@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>yandex-direct-mcp — Управляйте рекламой через ИИ</title>
-<meta name="description" content="MCP-сервер для управления Яндекс Директ через AI-ассистентов. 30 инструментов, чистый Ruby, открытый исходный код.">
+<title>yandex-direct-mcp — Manage ads via AI</title>
+<meta name="description" content="MCP server for managing Yandex Direct via AI assistants. 30 tools, pure Ruby, open source.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -103,6 +103,48 @@ nav .container {
 }
 
 .nav-links a:hover { color: var(--text-primary); }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.lang-toggle button {
+  background: transparent;
+  color: var(--text-dim);
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.lang-toggle button.active {
+  background: var(--accent);
+  color: #0a0b10;
+}
+
+.lang-toggle button:hover:not(.active) {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
 
 .nav-github {
   display: inline-flex;
@@ -711,14 +753,20 @@ footer {
   <div class="container">
     <a href="#" class="nav-brand">yandex-direct<span>.</span>mcp</a>
     <ul class="nav-links">
-      <li><a href="#features">Возможности</a></li>
-      <li><a href="#setup">Установка</a></li>
-      <li><a href="#tools">Инструменты</a></li>
+      <li><a href="#features" data-en="Features" data-ru="Возможности">Features</a></li>
+      <li><a href="#setup" data-en="Installation" data-ru="Установка">Installation</a></li>
+      <li><a href="#tools" data-en="Tools" data-ru="Инструменты">Tools</a></li>
     </ul>
-    <a href="https://github.com/vtka/yandex-direct-mcp" class="nav-github" target="_blank">
-      <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-      GitHub
-    </a>
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button id="lang-en" class="active" onclick="setLang('en')">EN</button>
+        <button id="lang-ru" onclick="setLang('ru')">RU</button>
+      </div>
+      <a href="https://github.com/vtka/yandex-direct-mcp" class="nav-github" target="_blank">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
   </div>
 </nav>
 
@@ -726,14 +774,14 @@ footer {
 <section class="hero">
   <div class="container">
     <div class="hero-badge">Ruby MCP Server</div>
-    <h1>Управляйте<br><span class="highlight">Яндекс Директом</span><br>через чат</h1>
-    <p class="hero-sub">MCP-сервер подключает Яндекс Директ к AI-ассистентам. Создавайте кампании, пишите объявления и анализируйте результаты прямо в Claude Code.</p>
+    <h1 data-en="Manage<br><span class='highlight'>Yandex Direct</span><br>via chat" data-ru="Управляйте<br><span class='highlight'>Яндекс Директом</span><br>через чат">Manage<br><span class="highlight">Yandex Direct</span><br>via chat</h1>
+    <p class="hero-sub" data-en="MCP server connects Yandex Direct to AI assistants. Create campaigns, write ads, and analyze results right in Claude Code." data-ru="MCP-сервер подключает Яндекс Директ к AI-ассистентам. Создавайте кампании, пишите объявления и анализируйте результаты прямо в Claude Code.">MCP server connects Yandex Direct to AI assistants. Create campaigns, write ads, and analyze results right in Claude Code.</p>
     <div class="hero-actions">
       <a href="https://github.com/vtka/yandex-direct-mcp" class="btn-primary" target="_blank">
         <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        Начать
+        <span data-en="Get Started" data-ru="Начать">Get Started</span>
       </a>
-      <a href="#setup" class="btn-secondary">Как установить</a>
+      <a href="#setup" class="btn-secondary" data-en="How to install" data-ru="Как установить">How to install</a>
     </div>
   </div>
 </section>
@@ -744,19 +792,19 @@ footer {
     <div class="stats-grid">
       <div class="stat">
         <div class="stat-number">30</div>
-        <div class="stat-label">Инструментов</div>
+        <div class="stat-label" data-en="Tools" data-ru="Инструментов">Tools</div>
       </div>
       <div class="stat">
         <div class="stat-number">6</div>
-        <div class="stat-label">API-сервисов</div>
+        <div class="stat-label" data-en="API Services" data-ru="API-сервисов">API Services</div>
       </div>
       <div class="stat">
         <div class="stat-number">0</div>
-        <div class="stat-label">Зависимостей</div>
+        <div class="stat-label" data-en="Dependencies" data-ru="Зависимостей">Dependencies</div>
       </div>
       <div class="stat">
         <div class="stat-number">MIT</div>
-        <div class="stat-label">Лицензия</div>
+        <div class="stat-label" data-en="License" data-ru="Лицензия">License</div>
       </div>
     </div>
   </div>
@@ -773,14 +821,14 @@ footer {
         <div class="terminal-title">claude code</div>
       </div>
       <div class="terminal-body">
-        <div class="line"><span class="t-prompt">&gt;</span> Покажи мои кампании</div>
+        <div class="line"><span class="t-prompt">&gt;</span> <span data-en="Show my campaigns" data-ru="Покажи мои кампании">Show my campaigns</span></div>
         <div class="line"><br></div>
-        <div class="line"><span class="t-response">Найдена 1 кампания:</span></div>
+        <div class="line"><span class="t-response" data-en="Found 1 campaign:" data-ru="Найдена 1 кампания:">Found 1 campaign:</span></div>
         <div class="line"><span class="t-key">  ID:</span> <span class="t-string">708319023</span></div>
-        <div class="line"><span class="t-key">  Название:</span> Книга «Вскрытие покажет» — author.today</div>
-        <div class="line"><span class="t-key">  Статус:</span> <span class="t-string">Черновик</span></div>
-        <div class="line"><span class="t-key">  Бюджет:</span> 1 714 тг/день</div>
-        <div class="line"><span class="t-key">  Ключевых фраз:</span> 18</div>
+        <div class="line"><span class="t-key" data-en="  Name:" data-ru="  Название:">  Name:</span> <span data-en="Book &laquo;Autopsy Will Show&raquo; — author.today" data-ru="Книга &laquo;Вскрытие покажет&raquo; — author.today">Book &laquo;Autopsy Will Show&raquo; — author.today</span></div>
+        <div class="line"><span class="t-key" data-en="  Status:" data-ru="  Статус:">  Status:</span> <span class="t-string" data-en="Draft" data-ru="Черновик">Draft</span></div>
+        <div class="line"><span class="t-key" data-en="  Budget:" data-ru="  Бюджет:">  Budget:</span> <span data-en="1,714 KZT/day" data-ru="1 714 тг/день">1,714 KZT/day</span></div>
+        <div class="line"><span class="t-key" data-en="  Keywords:" data-ru="  Ключевых фраз:">  Keywords:</span> 18</div>
       </div>
     </div>
   </div>
@@ -790,9 +838,9 @@ footer {
 <section class="features reveal" id="features">
   <div class="container">
     <div class="section-header">
-      <div class="section-tag">Возможности</div>
-      <h2 class="section-title">Полный контроль над рекламой</h2>
-      <p class="section-desc">Всё, что нужно для управления кампаниями Яндекс Директ — от создания до аналитики</p>
+      <div class="section-tag" data-en="Features" data-ru="Возможности">Features</div>
+      <h2 class="section-title" data-en="Full control over advertising" data-ru="Полный контроль над рекламой">Full control over advertising</h2>
+      <p class="section-desc" data-en="Everything you need to manage Yandex Direct campaigns — from creation to analytics" data-ru="Всё, что нужно для управления кампаниями Яндекс Директ — от создания до аналитики">Everything you need to manage Yandex Direct campaigns — from creation to analytics</p>
     </div>
     <div class="features-grid">
       <div class="feature-card">
@@ -800,48 +848,48 @@ footer {
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5c518" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
         <div class="feature-count">6 tools</div>
-        <h3 class="feature-name">Кампании</h3>
-        <p class="feature-desc">Создание, редактирование, остановка и возобновление рекламных кампаний с настройкой бюджета и минус-фраз</p>
+        <h3 class="feature-name" data-en="Campaigns" data-ru="Кампании">Campaigns</h3>
+        <p class="feature-desc" data-en="Create, edit, pause, and resume ad campaigns with budget and negative keyword settings" data-ru="Создание, редактирование, остановка и возобновление рекламных кампаний с настройкой бюджета и минус-фраз">Create, edit, pause, and resume ad campaigns with budget and negative keyword settings</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5c518" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         </div>
         <div class="feature-count">4 tools</div>
-        <h3 class="feature-name">Группы объявлений</h3>
-        <p class="feature-desc">Гео-таргетинг по регионам, городам и странам. Минус-фразы на уровне группы</p>
+        <h3 class="feature-name" data-en="Ad Groups" data-ru="Группы объявлений">Ad Groups</h3>
+        <p class="feature-desc" data-en="Geo-targeting by regions, cities, and countries. Group-level negative keywords" data-ru="Гео-таргетинг по регионам, городам и странам. Минус-фразы на уровне группы">Geo-targeting by regions, cities, and countries. Group-level negative keywords</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5c518" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
         <div class="feature-count">7 tools</div>
-        <h3 class="feature-name">Объявления</h3>
-        <p class="feature-desc">Текстово-графические объявления с заголовками, текстом и ссылками. Отправка на модерацию</p>
+        <h3 class="feature-name" data-en="Ads" data-ru="Объявления">Ads</h3>
+        <p class="feature-desc" data-en="Text and image ads with titles, copy, and links. Submit for moderation" data-ru="Текстово-графические объявления с заголовками, текстом и ссылками. Отправка на модерацию">Text and image ads with titles, copy, and links. Submit for moderation</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5c518" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
         <div class="feature-count">6 tools</div>
-        <h3 class="feature-name">Ключевые фразы</h3>
-        <p class="feature-desc">Добавление, обновление и управление ключевыми фразами. Остановка и возобновление показов</p>
+        <h3 class="feature-name" data-en="Keywords" data-ru="Ключевые фразы">Keywords</h3>
+        <p class="feature-desc" data-en="Add, update, and manage keywords. Pause and resume impressions" data-ru="Добавление, обновление и управление ключевыми фразами. Остановка и возобновление показов">Add, update, and manage keywords. Pause and resume impressions</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5c518" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         </div>
         <div class="feature-count">3 tools</div>
-        <h3 class="feature-name">Отчёты</h3>
-        <p class="feature-desc">Статистика по кампаниям, объявлениям и поисковым запросам: показы, клики, расходы, CTR</p>
+        <h3 class="feature-name" data-en="Reports" data-ru="Отчёты">Reports</h3>
+        <p class="feature-desc" data-en="Campaign, ad, and search query statistics: impressions, clicks, spend, CTR" data-ru="Статистика по кампаниям, объявлениям и поисковым запросам: показы, клики, расходы, CTR">Campaign, ad, and search query statistics: impressions, clicks, spend, CTR</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5c518" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
         <div class="feature-count">4 tools</div>
-        <h3 class="feature-name">Справочники</h3>
-        <p class="feature-desc">Регионы для гео-таргетинга, валюты, интересы аудитории и другие справочные данные</p>
+        <h3 class="feature-name" data-en="Dictionaries" data-ru="Справочники">Dictionaries</h3>
+        <p class="feature-desc" data-en="Regions for geo-targeting, currencies, audience interests, and other reference data" data-ru="Регионы для гео-таргетинга, валюты, интересы аудитории и другие справочные данные">Regions for geo-targeting, currencies, audience interests, and other reference data</p>
       </div>
     </div>
   </div>
@@ -851,45 +899,45 @@ footer {
 <section class="setup reveal" id="setup">
   <div class="container">
     <div class="section-header">
-      <div class="section-tag">Установка</div>
-      <h2 class="section-title">Настройка за 5 минут</h2>
-      <p class="section-desc">Подключите MCP-сервер к Claude Code и начните управлять рекламой</p>
+      <div class="section-tag" data-en="Installation" data-ru="Установка">Installation</div>
+      <h2 class="section-title" data-en="Setup in 5 minutes" data-ru="Настройка за 5 минут">Setup in 5 minutes</h2>
+      <p class="section-desc" data-en="Connect the MCP server to Claude Code and start managing your ads" data-ru="Подключите MCP-сервер к Claude Code и начните управлять рекламой">Connect the MCP server to Claude Code and start managing your ads</p>
     </div>
     <div class="setup-steps">
       <div class="steps-list">
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-content">
-            <h3>Создайте OAuth-приложение</h3>
-            <p>Зарегистрируйте приложение на oauth.yandex.ru с правами доступа к API Яндекс Директа</p>
+            <h3 data-en="Create an OAuth app" data-ru="Создайте OAuth-приложение">Create an OAuth app</h3>
+            <p data-en="Register an app at oauth.yandex.ru with Yandex Direct API access permissions" data-ru="Зарегистрируйте приложение на oauth.yandex.ru с правами доступа к API Яндекс Директа">Register an app at oauth.yandex.ru with Yandex Direct API access permissions</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-content">
-            <h3>Подайте заявку на доступ к API</h3>
-            <p>В Яндекс Директ перейдите в Инструменты &rarr; API &rarr; Мои заявки. API начинает работать сразу после подачи</p>
+            <h3 data-en="Apply for API access" data-ru="Подайте заявку на доступ к API">Apply for API access</h3>
+            <p data-en="In Yandex Direct go to Tools &rarr; API &rarr; My Applications. The API starts working right after submission" data-ru="В Яндекс Директ перейдите в Инструменты &rarr; API &rarr; Мои заявки. API начинает работать сразу после подачи">In Yandex Direct go to Tools &rarr; API &rarr; My Applications. The API starts working right after submission</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-content">
-            <h3>Получите OAuth-токен</h3>
-            <p>Авторизуйтесь через OAuth и скопируйте токен из адресной строки</p>
+            <h3 data-en="Get an OAuth token" data-ru="Получите OAuth-токен">Get an OAuth token</h3>
+            <p data-en="Authorize via OAuth and copy the token from the address bar" data-ru="Авторизуйтесь через OAuth и скопируйте токен из адресной строки">Authorize via OAuth and copy the token from the address bar</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">4</div>
           <div class="step-content">
-            <h3>Добавьте конфиг</h3>
-            <p>Скопируйте конфигурацию MCP-сервера в .mcp.json вашего проекта или в глобальный ~/.claude.json</p>
+            <h3 data-en="Add the config" data-ru="Добавьте конфиг">Add the config</h3>
+            <p data-en="Copy the MCP server config into your project's .mcp.json or the global ~/.claude.json" data-ru="Скопируйте конфигурацию MCP-сервера в .mcp.json вашего проекта или в глобальный ~/.claude.json">Copy the MCP server config into your project's .mcp.json or the global ~/.claude.json</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">5</div>
           <div class="step-content">
-            <h3>Готово!</h3>
-            <p>Перезапустите Claude Code — все 30 инструментов доступны через чат</p>
+            <h3 data-en="Done!" data-ru="Готово!">Done!</h3>
+            <p data-en="Restart Claude Code — all 30 tools are available via chat" data-ru="Перезапустите Claude Code — все 30 инструментов доступны через чат">Restart Claude Code — all 30 tools are available via chat</p>
           </div>
         </div>
       </div>
@@ -901,7 +949,7 @@ footer {
       <span class="k">"command"</span>: <span class="s">"ruby"</span>,
       <span class="k">"args"</span>: [<span class="s">"path/to/bin/server"</span>],
       <span class="k">"env"</span>: {
-        <span class="k">"YANDEX_DIRECT_TOKEN"</span>: <span class="s">"ваш_токен"</span>
+        <span class="k">"YANDEX_DIRECT_TOKEN"</span>: <span class="s" data-en="your_token" data-ru="ваш_токен">"your_token"</span>
       }
     }
   }
@@ -916,36 +964,36 @@ footer {
   <div class="container">
     <div class="section-header">
       <div class="section-tag">API</div>
-      <h2 class="section-title">30 инструментов</h2>
-      <p class="section-desc">Полный набор для управления рекламными кампаниями</p>
+      <h2 class="section-title" data-en="30 Tools" data-ru="30 инструментов">30 Tools</h2>
+      <p class="section-desc" data-en="Complete toolkit for managing ad campaigns" data-ru="Полный набор для управления рекламными кампаниями">Complete toolkit for managing ad campaigns</p>
     </div>
     <div class="tools-table-wrap">
       <table class="tools-table">
         <thead>
           <tr>
-            <th>Инструмент</th>
-            <th>Описание</th>
-            <th>Тип</th>
+            <th data-en="Tool" data-ru="Инструмент">Tool</th>
+            <th data-en="Description" data-ru="Описание">Description</th>
+            <th data-en="Type" data-ru="Тип">Type</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td class="tool-name">campaigns_get</td><td class="tool-desc">Список кампаний с фильтрацией</td><td><span class="tool-badge badge-read">read</span></td></tr>
-          <tr><td class="tool-name">campaigns_add</td><td class="tool-desc">Создать кампанию с бюджетом</td><td><span class="tool-badge badge-write">write</span></td></tr>
-          <tr><td class="tool-name">campaigns_update</td><td class="tool-desc">Обновить параметры</td><td><span class="tool-badge badge-write">write</span></td></tr>
-          <tr><td class="tool-name">campaigns_suspend</td><td class="tool-desc">Остановить показы</td><td><span class="tool-badge badge-write">write</span></td></tr>
-          <tr><td class="tool-name">campaigns_resume</td><td class="tool-desc">Возобновить показы</td><td><span class="tool-badge badge-write">write</span></td></tr>
-          <tr><td class="tool-name">campaigns_delete</td><td class="tool-desc">Архивировать кампании</td><td><span class="tool-badge badge-delete">delete</span></td></tr>
-          <tr><td class="tool-name">adgroups_get</td><td class="tool-desc">Группы объявлений</td><td><span class="tool-badge badge-read">read</span></td></tr>
-          <tr><td class="tool-name">adgroups_add</td><td class="tool-desc">Создать с гео-таргетингом</td><td><span class="tool-badge badge-write">write</span></td></tr>
-          <tr><td class="tool-name">ads_get</td><td class="tool-desc">Список объявлений</td><td><span class="tool-badge badge-read">read</span></td></tr>
-          <tr><td class="tool-name">ads_add</td><td class="tool-desc">Создать объявление</td><td><span class="tool-badge badge-write">write</span></td></tr>
-          <tr><td class="tool-name">ads_moderate</td><td class="tool-desc">Отправить на модерацию</td><td><span class="tool-badge badge-write">write</span></td></tr>
-          <tr><td class="tool-name">keywords_get</td><td class="tool-desc">Ключевые фразы</td><td><span class="tool-badge badge-read">read</span></td></tr>
-          <tr><td class="tool-name">keywords_add</td><td class="tool-desc">Добавить фразы</td><td><span class="tool-badge badge-write">write</span></td></tr>
-          <tr><td class="tool-name">report_campaign</td><td class="tool-desc">Статистика кампаний</td><td><span class="tool-badge badge-read">read</span></td></tr>
-          <tr><td class="tool-name">report_search_queries</td><td class="tool-desc">Поисковые запросы</td><td><span class="tool-badge badge-read">read</span></td></tr>
-          <tr><td class="tool-name">dictionaries_regions</td><td class="tool-desc">Справочник регионов</td><td><span class="tool-badge badge-read">read</span></td></tr>
-          <tr><td class="tool-name">dictionaries_interests</td><td class="tool-desc">Интересы аудитории</td><td><span class="tool-badge badge-read">read</span></td></tr>
+          <tr><td class="tool-name">campaigns_get</td><td class="tool-desc" data-en="List campaigns with filtering" data-ru="Список кампаний с фильтрацией">List campaigns with filtering</td><td><span class="tool-badge badge-read">read</span></td></tr>
+          <tr><td class="tool-name">campaigns_add</td><td class="tool-desc" data-en="Create a campaign with budget" data-ru="Создать кампанию с бюджетом">Create a campaign with budget</td><td><span class="tool-badge badge-write">write</span></td></tr>
+          <tr><td class="tool-name">campaigns_update</td><td class="tool-desc" data-en="Update parameters" data-ru="Обновить параметры">Update parameters</td><td><span class="tool-badge badge-write">write</span></td></tr>
+          <tr><td class="tool-name">campaigns_suspend</td><td class="tool-desc" data-en="Pause impressions" data-ru="Остановить показы">Pause impressions</td><td><span class="tool-badge badge-write">write</span></td></tr>
+          <tr><td class="tool-name">campaigns_resume</td><td class="tool-desc" data-en="Resume impressions" data-ru="Возобновить показы">Resume impressions</td><td><span class="tool-badge badge-write">write</span></td></tr>
+          <tr><td class="tool-name">campaigns_delete</td><td class="tool-desc" data-en="Archive campaigns" data-ru="Архивировать кампании">Archive campaigns</td><td><span class="tool-badge badge-delete">delete</span></td></tr>
+          <tr><td class="tool-name">adgroups_get</td><td class="tool-desc" data-en="Ad groups" data-ru="Группы объявлений">Ad groups</td><td><span class="tool-badge badge-read">read</span></td></tr>
+          <tr><td class="tool-name">adgroups_add</td><td class="tool-desc" data-en="Create with geo-targeting" data-ru="Создать с гео-таргетингом">Create with geo-targeting</td><td><span class="tool-badge badge-write">write</span></td></tr>
+          <tr><td class="tool-name">ads_get</td><td class="tool-desc" data-en="List ads" data-ru="Список объявлений">List ads</td><td><span class="tool-badge badge-read">read</span></td></tr>
+          <tr><td class="tool-name">ads_add</td><td class="tool-desc" data-en="Create an ad" data-ru="Создать объявление">Create an ad</td><td><span class="tool-badge badge-write">write</span></td></tr>
+          <tr><td class="tool-name">ads_moderate</td><td class="tool-desc" data-en="Submit for moderation" data-ru="Отправить на модерацию">Submit for moderation</td><td><span class="tool-badge badge-write">write</span></td></tr>
+          <tr><td class="tool-name">keywords_get</td><td class="tool-desc" data-en="Keywords" data-ru="Ключевые фразы">Keywords</td><td><span class="tool-badge badge-read">read</span></td></tr>
+          <tr><td class="tool-name">keywords_add</td><td class="tool-desc" data-en="Add keywords" data-ru="Добавить фразы">Add keywords</td><td><span class="tool-badge badge-write">write</span></td></tr>
+          <tr><td class="tool-name">report_campaign</td><td class="tool-desc" data-en="Campaign statistics" data-ru="Статистика кампаний">Campaign statistics</td><td><span class="tool-badge badge-read">read</span></td></tr>
+          <tr><td class="tool-name">report_search_queries</td><td class="tool-desc" data-en="Search queries" data-ru="Поисковые запросы">Search queries</td><td><span class="tool-badge badge-read">read</span></td></tr>
+          <tr><td class="tool-name">dictionaries_regions</td><td class="tool-desc" data-en="Regions directory" data-ru="Справочник регионов">Regions directory</td><td><span class="tool-badge badge-read">read</span></td></tr>
+          <tr><td class="tool-name">dictionaries_interests</td><td class="tool-desc" data-en="Audience interests" data-ru="Интересы аудитории">Audience interests</td><td><span class="tool-badge badge-read">read</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -967,6 +1015,35 @@ footer {
 </footer>
 
 <script>
+// Language toggle
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+
+  // Update toggle buttons
+  document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+  document.getElementById('lang-ru').classList.toggle('active', lang === 'ru');
+
+  // Update page title and meta
+  if (lang === 'en') {
+    document.title = 'yandex-direct-mcp — Manage ads via AI';
+    document.querySelector('meta[name="description"]').content = 'MCP server for managing Yandex Direct via AI assistants. 30 tools, pure Ruby, open source.';
+  } else {
+    document.title = 'yandex-direct-mcp — Управляйте рекламой через ИИ';
+    document.querySelector('meta[name="description"]').content = 'MCP-сервер для управления Яндекс Директ через AI-ассистентов. 30 инструментов, чистый Ruby, открытый исходный код.';
+  }
+
+  // Update all elements with data-en / data-ru attributes
+  document.querySelectorAll('[data-en][data-ru]').forEach(function(el) {
+    var text = el.getAttribute('data-' + lang);
+    if (text !== null) {
+      el.innerHTML = text;
+    }
+  });
+}
+
 // Scroll reveal
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
