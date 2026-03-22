@@ -35,13 +35,13 @@ module YandexDirectMcp
         registry.register(
           name: "yandex_direct_campaigns_add",
           description: "Создать новую рекламную кампанию. Укажите название, дату старта, дневной бюджет. " \
-                       "Бюджет в микроединицах (1 руб = 1_000_000).",
+                       "Бюджет в валюте аккаунта, конвертируется в микроединицы автоматически.",
           input_schema: {
             type: "object",
             properties: {
               name: { type: "string", description: "Название кампании" },
               start_date: { type: "string", description: "Дата старта (YYYY-MM-DD)" },
-              daily_budget_rub: { type: "number", description: "Дневной бюджет в рублях" },
+              daily_budget: { type: "number", description: "Дневной бюджет в валюте аккаунта (рубли, тенге и др.)" },
               negative_keywords: {
                 type: "array", items: { type: "string" },
                 description: "Минус-фразы для кампании"
@@ -65,8 +65,8 @@ module YandexDirectMcp
             }
           }
 
-          if args["daily_budget_rub"]
-            budget_micros = (args["daily_budget_rub"] * 1_000_000).to_i
+          if args["daily_budget"]
+            budget_micros = (args["daily_budget"] * 1_000_000).to_i
             campaign["DailyBudget"] = { "Amount" => budget_micros, "Mode" => "DISTRIBUTED" }
           end
 
@@ -85,7 +85,7 @@ module YandexDirectMcp
             properties: {
               id: { type: "integer", description: "ID кампании" },
               name: { type: "string", description: "Новое название" },
-              daily_budget_rub: { type: "number", description: "Новый дневной бюджет в рублях" },
+              daily_budget: { type: "number", description: "Новый дневной бюджет в рублях" },
               end_date: { type: "string", description: "Дата окончания (YYYY-MM-DD)" },
               negative_keywords: { type: "array", items: { type: "string" }, description: "Минус-фразы" }
             },
@@ -96,8 +96,8 @@ module YandexDirectMcp
           campaign["Name"] = args["name"] if args["name"]
           campaign["EndDate"] = args["end_date"] if args["end_date"]
 
-          if args["daily_budget_rub"]
-            budget_micros = (args["daily_budget_rub"] * 1_000_000).to_i
+          if args["daily_budget"]
+            budget_micros = (args["daily_budget"] * 1_000_000).to_i
             campaign["DailyBudget"] = { "Amount" => budget_micros, "Mode" => "DISTRIBUTED" }
           end
 
