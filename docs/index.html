@@ -179,23 +179,50 @@ nav .container {
 .nav-github svg { width: 18px; height: 18px; fill: currentColor; }
 
 @media (max-width: 768px) {
+  .container { padding: 0 16px; }
+  /* Nav: shrink everything to fit */
+  nav { padding: 12px 0; }
   .nav-links { display: none; }
+  .nav-brand { font-size: 0.8rem; }
+  .nav-right { gap: 8px; }
+  .lang-toggle button { padding: 5px 8px; font-size: 0.7rem; }
+  .nav-github { padding: 6px; border: none; }
   .nav-github span { display: none; }
-  .nav-github { padding: 8px; }
-  .hero { padding: 120px 0 60px; }
+  .nav-github svg { width: 16px; height: 16px; }
+  /* Hero */
+  .hero { padding: 100px 0 48px; }
   .hero::before, .hero::after { display: none; }
-  .hero h1 { font-size: 2.2rem; letter-spacing: -1px; }
-  .hero-sub { font-size: 1rem; }
-  .hero-actions { flex-direction: column; }
-  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
-  .stats { padding: 0 0 60px; }
-  .stat { padding: 20px 16px; }
-  .stat-number { font-size: 1.8rem; }
-  .features, .setup, .tools { padding: 60px 0; }
-  .section-title { font-size: 1.8rem; }
-  .demo { padding: 0 0 60px; }
-  .terminal-body { padding: 16px; font-size: 0.75rem; }
-  .nav-brand { font-size: 0.9rem; }
+  .hero-badge { font-size: 0.7rem; margin-bottom: 20px; }
+  .hero h1 { font-size: 2rem; letter-spacing: -0.5px; }
+  .hero-sub { font-size: 0.92rem; margin-bottom: 32px; }
+  .hero-actions { flex-direction: column; gap: 10px; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; padding: 12px 24px; font-size: 0.88rem; }
+  /* Stats */
+  .stats { padding: 0 0 48px; }
+  .stat { padding: 18px 12px; }
+  .stat-number { font-size: 1.6rem; }
+  .stat-label { font-size: 0.68rem; letter-spacing: 0.5px; }
+  /* Sections */
+  .features, .setup, .tools { padding: 48px 0; }
+  .section-header { margin-bottom: 36px; }
+  .section-title { font-size: 1.6rem; }
+  .section-desc { font-size: 0.92rem; }
+  /* Terminal */
+  .demo { padding: 0 0 48px; }
+  .terminal-body { padding: 16px; font-size: 0.72rem; line-height: 1.7; }
+  .terminal-bar { padding: 10px 14px; }
+  /* Features grid */
+  .features-grid { gap: 12px; }
+  .feature-card { padding: 24px; }
+  /* Setup */
+  .setup-code pre { font-size: 0.72rem; padding: 16px; }
+  .step-content h3 { font-size: 0.92rem; }
+  .step-content p { font-size: 0.82rem; }
+  /* Tools table */
+  .tools-table { font-size: 0.75rem; }
+  .tools-table thead th, .tools-table tbody td { padding: 8px 12px; }
+  /* Footer */
+  footer { padding: 40px 0; }
 }
 
 /* ═══════════ HERO ═══════════ */
