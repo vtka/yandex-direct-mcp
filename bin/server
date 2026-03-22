@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../lib/yandex_direct_mcp"
+
+token = ENV["YANDEX_DIRECT_TOKEN"]
+sandbox = ENV["YANDEX_DIRECT_SANDBOX"] == "true"
+
+unless token
+  $stderr.puts "Ошибка: не задана переменная YANDEX_DIRECT_TOKEN"
+  $stderr.puts ""
+  $stderr.puts "Для получения токена:"
+  $stderr.puts "1. Зарегистрируйте приложение на https://oauth.yandex.ru/"
+  $stderr.puts "   - Тип: Веб-сервисы"
+  $stderr.puts "   - Права: Яндекс.Директ — Использование API Яндекс.Директа"
+  $stderr.puts "2. Получите OAuth-токен по ссылке:"
+  $stderr.puts "   https://oauth.yandex.ru/authorize?response_type=token&client_id=ВАШ_CLIENT_ID"
+  $stderr.puts "3. Установите переменную:"
+  $stderr.puts "   export YANDEX_DIRECT_TOKEN=ваш_токен"
+  exit 1
+end
+
+client = YandexDirectMcp::Client.new(token: token, sandbox: sandbox)
+server = YandexDirectMcp::Server.new(client: client)
+server.run
