@@ -73,6 +73,7 @@ module YandexDirectMcp
       tool_name = params["name"]
       arguments = params["arguments"] || {}
       arguments = JSON.parse(arguments) if arguments.is_a?(String)
+      arguments = deep_normalize(arguments)
 
       tool = @registry.find(tool_name)
       unless tool
@@ -102,6 +103,24 @@ module YandexDirectMcp
       Tools::Keywords.register(@registry)
       Tools::Reports.register(@registry)
       Tools::Dictionaries.register(@registry)
+    end
+
+    def deep_normalize(obj)
+      case obj
+      when String
+        begin
+          parsed = JSON.parse(obj)
+          parsed.is_a?(Array) || parsed.is_a?(Hash) ? deep_normalize(parsed) : obj
+        rescue JSON::ParserError
+          obj
+        end
+      when Hash
+        obj.transform_values { |v| deep_normalize(v) }
+      when Array
+        obj.map { |v| deep_normalize(v) }
+      else
+        obj
+      end
     end
 
     def jsonrpc_response(id, result)
