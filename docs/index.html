@@ -171,15 +171,20 @@ nav .container {
   .nav-links { display: none; }
   .nav-github span { display: none; }
   .nav-github { padding: 8px; }
-  .hero { padding: 120px 0 60px; }
+  .hero { padding: 120px 0 60px; overflow: hidden; }
+  .hero::before, .hero::after { display: none; }
   .hero h1 { font-size: 2.2rem; letter-spacing: -1px; }
   .hero-sub { font-size: 1rem; }
   .hero-actions { flex-direction: column; }
   .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
   .stats { padding: 0 0 60px; }
+  .stat { padding: 20px 16px; }
+  .stat-number { font-size: 1.8rem; }
   .features, .setup, .tools { padding: 60px 0; }
   .section-title { font-size: 1.8rem; }
   .demo { padding: 0 0 60px; }
+  .terminal-body { padding: 16px; font-size: 0.75rem; }
+  .nav-brand { font-size: 0.9rem; }
 }
 
 /* ═══════════ HERO ═══════════ */
