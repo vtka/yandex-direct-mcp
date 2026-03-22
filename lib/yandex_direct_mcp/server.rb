@@ -72,6 +72,7 @@ module YandexDirectMcp
     def handle_tool_call(id, params)
       tool_name = params["name"]
       arguments = params["arguments"] || {}
+      arguments = JSON.parse(arguments) if arguments.is_a?(String)
 
       tool = @registry.find(tool_name)
       unless tool
