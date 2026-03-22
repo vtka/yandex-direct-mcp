@@ -1,112 +1,112 @@
 # yandex-direct-mcp
 
-MCP-сервер для управления рекламными кампаниями Яндекс Директ через AI-ассистентов (Claude Code, Claude Desktop, ChatGPT и др.).
+MCP server for managing Yandex Direct ad campaigns via AI assistants (Claude Code, Claude Desktop, ChatGPT, etc.).
 
-Чистый Ruby, без внешних зависимостей. 30 инструментов для полного цикла работы с рекламой: создание кампаний, написание объявлений, подбор ключевых фраз, аналитика.
+Pure Ruby, no external dependencies. 30 tools for a complete advertising workflow: creating campaigns, writing ads, selecting keywords, analytics.
 
-## Возможности
+## Features
 
-| Сервис | Инструменты | Описание |
+| Service | Tools | Description |
 |---|---|---|
-| **Campaigns** | 6 | Создание, редактирование, остановка, возобновление, удаление кампаний |
-| **Ad Groups** | 4 | Группы объявлений с гео-таргетингом и минус-фразами |
-| **Ads** | 7 | Текстово-графические объявления, модерация |
-| **Keywords** | 6 | Ключевые фразы, ставки, остановка/возобновление |
-| **Reports** | 3 | Отчёты по кампаниям, объявлениям, поисковым запросам |
-| **Dictionaries** | 4 | Справочники регионов, валют, интересов аудитории |
+| **Campaigns** | 6 | Create, edit, suspend, resume, delete campaigns |
+| **Ad Groups** | 4 | Ad groups with geo-targeting and negative keywords |
+| **Ads** | 7 | Text & image ads, moderation |
+| **Keywords** | 6 | Keywords, bids, suspend/resume |
+| **Reports** | 3 | Reports on campaigns, ads, search queries |
+| **Dictionaries** | 4 | Dictionaries for regions, currencies, audience interests |
 
-## Быстрый старт
+## Quick Start
 
-### 1. Создайте OAuth-приложение
+### 1. Create an OAuth Application
 
-1. Перейдите на [oauth.yandex.ru](https://oauth.yandex.ru/) и создайте новое приложение
-2. Тип платформы: **Веб-сервисы**
+1. Go to [oauth.yandex.ru](https://oauth.yandex.ru/) and create a new application
+2. Platform type: **Web services**
 3. Redirect URI: `https://oauth.yandex.ru/verification_code`
-4. Права доступа: **Яндекс.Директ — Использование API Яндекс.Директа**
+4. Permissions: **Yandex.Direct — Use Yandex.Direct API**
 
-### 2. Подтвердите доступ к API
+### 2. Confirm API Access
 
-После создания OAuth-приложения необходимо подать заявку на полный доступ к API Яндекс Директа:
+After creating the OAuth application, you need to submit a request for full access to the Yandex Direct API:
 
-1. Войдите в [Яндекс Директ](https://direct.yandex.ru/)
-2. Перейдите в **Инструменты → API** (или по прямой ссылке: `https://direct.yandex.ru/registered/main.pl?cmd=apiSettings`)
-3. Откройте вкладку **«Мои заявки»** → **«Новая заявка»**
-4. Заполните форму:
-   - **Приложение:** выберите ваше OAuth-приложение из списка
-   - **Контакт:** ваш email
-   - **Тип работы:** «Прямой заказчик и автоматизируете управление собственными кампаниями»
-   - **Язык программирования:** Ruby
-   - **Протокол:** JSON
-   - **Логины:** ваш логин в Яндекс Директе
-5. Отправьте заявку — API начинает работать сразу после подачи (статус «новая»)
+1. Sign in to [Yandex Direct](https://direct.yandex.ru/)
+2. Go to **Tools → API** (or use the direct link: `https://direct.yandex.ru/registered/main.pl?cmd=apiSettings`)
+3. Open the **"My requests"** tab → **"New request"**
+4. Fill out the form:
+   - **Application:** select your OAuth application from the list
+   - **Contact:** your email
+   - **Type of work:** "Direct advertiser automating management of own campaigns"
+   - **Programming language:** Ruby
+   - **Protocol:** JSON
+   - **Logins:** your Yandex Direct login
+5. Submit the request — the API starts working immediately after submission (status "new")
 
-> **Без этого шага API вернёт ошибку «Незавершенная регистрация» (код 58).**
+> **Without this step, the API will return an "Incomplete registration" error (code 58).**
 
-### 3. Получите OAuth-токен
+### 3. Obtain an OAuth Token
 
-Откройте в браузере (подставив ваш Client ID):
+Open the following URL in your browser (replace with your Client ID):
 
 ```
-https://oauth.yandex.ru/authorize?response_type=token&client_id=ВАШ_CLIENT_ID
+https://oauth.yandex.ru/authorize?response_type=token&client_id=YOUR_CLIENT_ID
 ```
 
-Авторизуйтесь и скопируйте токен из адресной строки.
+Sign in and copy the token from the address bar.
 
-### 4. Подключите к Claude Code
+### 4. Connect to Claude Code
 
-Добавьте в `.mcp.json` вашего проекта:
+Add the following to your project's `.mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "yandex-direct": {
       "command": "ruby",
-      "args": ["/путь/к/yandex-direct-mcp/bin/server"],
+      "args": ["/path/to/yandex-direct-mcp/bin/server"],
       "env": {
-        "YANDEX_DIRECT_TOKEN": "ваш_oauth_токен"
+        "YANDEX_DIRECT_TOKEN": "your_oauth_token"
       }
     }
   }
 }
 ```
 
-Или в глобальный конфиг `~/.claude.json` (секция `mcpServers`), чтобы сервер был доступен во всех проектах.
+Or add it to the global config `~/.claude.json` (under the `mcpServers` section) to make the server available across all projects.
 
-Для **Claude Desktop** — добавьте ту же конфигурацию в `~/Library/Application Support/Claude/claude_desktop_config.json`.
+For **Claude Desktop** — add the same configuration to `~/Library/Application Support/Claude/claude_desktop_config.json`.
 
-### 5. Используйте
+### 5. Start Using It
 
-После подключения AI-ассистент получит доступ ко всем 30 инструментам и сможет управлять вашими кампаниями через чат:
+Once connected, the AI assistant will have access to all 30 tools and will be able to manage your campaigns via chat:
 
-- *«Покажи мои кампании»*
-- *«Создай кампанию для продвижения книги с бюджетом 500 руб/день»*
-- *«Добавь ключевые фразы: читать онлайн, новые книги 2026»*
-- *«Покажи статистику за последнюю неделю»*
-- *«Какие поисковые запросы приводят клиентов?»*
-- *«Останови кампанию»*
-- *«Обнови текст объявления»*
+- *"Show my campaigns"*
+- *"Create a campaign to promote a book with a budget of 500 RUB/day"*
+- *"Add keywords: read online, new books 2026"*
+- *"Show statistics for the last week"*
+- *"What search queries are bringing customers?"*
+- *"Pause the campaign"*
+- *"Update the ad text"*
 
-> **Примечание:** валюта бюджета определяется аккаунтом Яндекс Директа (рубли, тенге и др.). Параметр `daily_budget` задаёт сумму в основной валюте аккаунта.
+> **Note:** The budget currency is determined by the Yandex Direct account (rubles, tenge, etc.). The `daily_budget` parameter specifies the amount in the account's primary currency.
 
-## Ограничения
+## Limitations
 
-- **SMB-кампании** (созданные через упрощённый wizard Яндекс Директа) не видны через API — только кампании типа TEXT_CAMPAIGN
-- **Уточнения (callouts)** можно создать через API, но привязать к объявлению можно только через веб-интерфейс
-- **Изображения** загружаются только по URL или base64 — локальные файлы нужно сначала захостить или закодировать
-- Яндекс требует **горизонтальное изображение** (минимум 1080x607) для текстово-графических объявлений
+- **SMB campaigns** (created via the simplified Yandex Direct wizard) are not visible through the API — only TEXT_CAMPAIGN type campaigns
+- **Callouts** can be created via the API, but can only be linked to an ad through the web interface
+- **Images** can only be uploaded via URL or base64 — local files must first be hosted or encoded
+- Yandex requires a **landscape image** (minimum 1080x607) for text & image ads
 
-## Sandbox-режим
+## Sandbox Mode
 
-Для тестирования без реальных расходов добавьте переменную `YANDEX_DIRECT_SANDBOX`:
+For testing without real expenses, add the `YANDEX_DIRECT_SANDBOX` environment variable:
 
 ```json
 {
   "mcpServers": {
     "yandex-direct": {
       "command": "ruby",
-      "args": ["/путь/к/yandex-direct-mcp/bin/server"],
+      "args": ["/path/to/yandex-direct-mcp/bin/server"],
       "env": {
-        "YANDEX_DIRECT_TOKEN": "ваш_токен",
+        "YANDEX_DIRECT_TOKEN": "your_token",
         "YANDEX_DIRECT_SANDBOX": "true"
       }
     }
@@ -114,98 +114,98 @@ https://oauth.yandex.ru/authorize?response_type=token&client_id=ВАШ_CLIENT_ID
 }
 ```
 
-Sandbox использует тестовый API Яндекс Директа — все операции выполняются на фиктивных данных.
+Sandbox uses the Yandex Direct test API — all operations are performed on fictitious data.
 
-## Список инструментов
+## Tool List
 
-### Кампании
+### Campaigns
 
-| Инструмент | Описание |
+| Tool | Description |
 |---|---|
-| `yandex_direct_campaigns_get` | Получить список кампаний с фильтрацией по ID, состоянию, типу |
-| `yandex_direct_campaigns_add` | Создать кампанию с названием, датой старта, бюджетом, минус-фразами |
-| `yandex_direct_campaigns_update` | Обновить параметры кампании |
-| `yandex_direct_campaigns_delete` | Удалить (архивировать) кампании |
-| `yandex_direct_campaigns_suspend` | Остановить показы |
-| `yandex_direct_campaigns_resume` | Возобновить показы |
+| `yandex_direct_campaigns_get` | Get a list of campaigns with filtering by ID, state, type |
+| `yandex_direct_campaigns_add` | Create a campaign with name, start date, budget, negative keywords |
+| `yandex_direct_campaigns_update` | Update campaign parameters |
+| `yandex_direct_campaigns_delete` | Delete (archive) campaigns |
+| `yandex_direct_campaigns_suspend` | Suspend impressions |
+| `yandex_direct_campaigns_resume` | Resume impressions |
 
-### Группы объявлений
+### Ad Groups
 
-| Инструмент | Описание |
+| Tool | Description |
 |---|---|
-| `yandex_direct_adgroups_get` | Получить группы по ID кампании или группы |
-| `yandex_direct_adgroups_add` | Создать группу с названием, регионами и минус-фразами |
-| `yandex_direct_adgroups_update` | Обновить группу |
-| `yandex_direct_adgroups_delete` | Удалить группы |
+| `yandex_direct_adgroups_get` | Get groups by campaign ID or group ID |
+| `yandex_direct_adgroups_add` | Create a group with name, regions, and negative keywords |
+| `yandex_direct_adgroups_update` | Update a group |
+| `yandex_direct_adgroups_delete` | Delete groups |
 
-### Объявления
+### Ads
 
-| Инструмент | Описание |
+| Tool | Description |
 |---|---|
-| `yandex_direct_ads_get` | Получить объявления с фильтрацией |
-| `yandex_direct_ads_add` | Создать текстово-графическое объявление (заголовок, текст, ссылка) |
-| `yandex_direct_ads_update` | Обновить объявление |
-| `yandex_direct_ads_delete` | Удалить объявления |
-| `yandex_direct_ads_suspend` | Остановить показы объявлений |
-| `yandex_direct_ads_resume` | Возобновить показы |
-| `yandex_direct_ads_moderate` | Отправить на модерацию |
+| `yandex_direct_ads_get` | Get ads with filtering |
+| `yandex_direct_ads_add` | Create a text & image ad (title, text, link) |
+| `yandex_direct_ads_update` | Update an ad |
+| `yandex_direct_ads_delete` | Delete ads |
+| `yandex_direct_ads_suspend` | Suspend ad impressions |
+| `yandex_direct_ads_resume` | Resume impressions |
+| `yandex_direct_ads_moderate` | Submit for moderation |
 
-### Ключевые фразы
+### Keywords
 
-| Инструмент | Описание |
+| Tool | Description |
 |---|---|
-| `yandex_direct_keywords_get` | Получить фразы по кампании или группе |
-| `yandex_direct_keywords_add` | Добавить фразы в группы объявлений |
-| `yandex_direct_keywords_update` | Обновить текст фраз |
-| `yandex_direct_keywords_delete` | Удалить фразы |
-| `yandex_direct_keywords_suspend` | Остановить показы по фразам |
-| `yandex_direct_keywords_resume` | Возобновить показы |
+| `yandex_direct_keywords_get` | Get keywords by campaign or group |
+| `yandex_direct_keywords_add` | Add keywords to ad groups |
+| `yandex_direct_keywords_update` | Update keyword text |
+| `yandex_direct_keywords_delete` | Delete keywords |
+| `yandex_direct_keywords_suspend` | Suspend impressions for keywords |
+| `yandex_direct_keywords_resume` | Resume impressions |
 
-### Отчёты
+### Reports
 
-| Инструмент | Описание |
+| Tool | Description |
 |---|---|
-| `yandex_direct_report_campaign` | Статистика кампаний: показы, клики, расходы, CTR, CPC |
-| `yandex_direct_report_ad` | Статистика по объявлениям |
-| `yandex_direct_report_search_queries` | Поисковые запросы пользователей (для поиска минус-слов) |
+| `yandex_direct_report_campaign` | Campaign statistics: impressions, clicks, cost, CTR, CPC |
+| `yandex_direct_report_ad` | Statistics by ad |
+| `yandex_direct_report_search_queries` | User search queries (for finding negative keywords) |
 
-### Справочники
+### Dictionaries
 
-| Инструмент | Описание |
+| Tool | Description |
 |---|---|
-| `yandex_direct_dictionaries_regions` | Регионы для гео-таргетинга (ID, название, тип) |
-| `yandex_direct_dictionaries_currencies` | Валюты и лимиты ставок |
-| `yandex_direct_dictionaries_interests` | Интересы аудитории для таргетинга |
-| `yandex_direct_dictionaries_all` | Все справочники сразу |
+| `yandex_direct_dictionaries_regions` | Regions for geo-targeting (ID, name, type) |
+| `yandex_direct_dictionaries_currencies` | Currencies and bid limits |
+| `yandex_direct_dictionaries_interests` | Audience interests for targeting |
+| `yandex_direct_dictionaries_all` | All dictionaries at once |
 
-## Структура проекта
+## Project Structure
 
 ```
 yandex-direct-mcp/
-├── bin/server                          # Точка входа MCP-сервера
+├── bin/server                          # MCP server entry point
 ├── lib/
-│   ├── yandex_direct_mcp.rb            # Загрузка модулей
+│   ├── yandex_direct_mcp.rb            # Module loader
 │   └── yandex_direct_mcp/
-│       ├── client.rb                   # HTTP-клиент для Yandex Direct API v5
-│       ├── server.rb                   # MCP JSON-RPC протокол (stdio)
-│       ├── tool_registry.rb            # Реестр инструментов
+│       ├── client.rb                   # HTTP client for Yandex Direct API v5
+│       ├── server.rb                   # MCP JSON-RPC protocol (stdio)
+│       ├── tool_registry.rb            # Tool registry
 │       └── tools/
-│           ├── campaigns.rb            # Управление кампаниями
-│           ├── ad_groups.rb            # Группы объявлений
-│           ├── ads.rb                  # Объявления
-│           ├── keywords.rb             # Ключевые фразы
-│           ├── reports.rb              # Аналитика и отчёты
-│           └── dictionaries.rb         # Справочники
+│           ├── campaigns.rb            # Campaign management
+│           ├── ad_groups.rb            # Ad groups
+│           ├── ads.rb                  # Ads
+│           ├── keywords.rb             # Keywords
+│           ├── reports.rb              # Analytics and reports
+│           └── dictionaries.rb         # Dictionaries
 ├── Gemfile
 ├── LICENSE
 └── .gitignore
 ```
 
-## Требования
+## Requirements
 
 - Ruby >= 3.1
-- OAuth-токен Яндекс Директ API (бесплатно)
+- Yandex Direct API OAuth token (free)
 
-## Лицензия
+## License
 
 MIT
