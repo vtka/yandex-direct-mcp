@@ -30,10 +30,11 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
-html {
+html, body {
   scroll-behavior: smooth;
   overflow-x: hidden;
   width: 100%;
+  max-width: 100vw;
 }
 
 body {
@@ -41,8 +42,6 @@ body {
   background: var(--bg-deep);
   color: var(--text-primary);
   line-height: 1.6;
-  overflow-x: hidden;
-  width: 100%;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
@@ -179,7 +178,8 @@ nav .container {
   .nav-links { display: none; }
   .nav-github span { display: none; }
   .nav-github { padding: 8px; }
-  .hero { padding: 120px 0 60px; overflow: hidden; }
+  section, nav, footer, .container { max-width: 100vw; overflow-x: hidden; }
+  .hero { padding: 120px 0 60px; }
   .hero::before, .hero::after { display: none; }
   .hero h1 { font-size: 2.2rem; letter-spacing: -1px; }
   .hero-sub { font-size: 1rem; }
