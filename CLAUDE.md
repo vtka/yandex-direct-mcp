@@ -71,10 +71,13 @@ Manages campaigns, ad groups, ads, keywords, images, bid modifiers, sitelinks, c
 - Standard Russian-speaking set: 225 (Russia), 149 (Belarus), 159 (Kazakhstan), 977
 - Region IDs come from `dictionaries/get` with `GeoRegions`
 
-### Keywords
+### Keywords & Bids
 - `---autotargeting` is a special system keyword, don't touch it
 - Adapt keywords to the book's actual genre — don't reuse detective keywords for romance, etc.
 - Avoid generic keywords that attract wrong audience (e.g., "электронная книга купить" brings e-reader buyers)
+- **Bids are set via `keywordbids` service**, NOT via `keywords/update` (which only changes text)
+- `keywordbids/set` accepts `KeywordId`, `SearchBid`, `NetworkBid` — values in **microcurrency**
+- Default bid of 1 tenge is too low for any impressions — set at least 20-50 tenge for books niche
 
 ## Campaign creation checklist
 

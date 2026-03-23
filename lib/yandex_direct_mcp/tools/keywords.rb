@@ -61,7 +61,7 @@ module YandexDirectMcp
 
         registry.register(
           name: "yandex_direct_keywords_update",
-          description: "Обновить ключевые фразы (текст фразы).",
+          description: "Обновить текст ключевых фраз.",
           input_schema: {
             type: "object",
             properties: {
@@ -128,6 +128,39 @@ module YandexDirectMcp
           }
         ) do |client, args|
           client.call("keywords", "resume", { "SelectionCriteria" => { "Ids" => args["ids"] } })
+        end
+
+        registry.register(
+          name: "yandex_direct_keywords_set_bids",
+          description: "Установить ставки для ключевых фраз. Ставки в микроединицах (1 тенге = 1000000). " \
+                       "Например, 30 тенге = 30000000.",
+          input_schema: {
+            type: "object",
+            properties: {
+              bids: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    keyword_id: { type: "integer", description: "ID ключевой фразы" },
+                    search_bid: { type: "integer", description: "Ставка для поиска в микроединицах" },
+                    network_bid: { type: "integer", description: "Ставка для сетей в микроединицах (опционально)" }
+                  },
+                  required: %w[keyword_id search_bid]
+                },
+                description: "Массив ставок"
+              }
+            },
+            required: %w[bids]
+          }
+        ) do |client, args|
+          items = args["bids"].map do |b|
+            item = { "KeywordId" => b["keyword_id"], "SearchBid" => b["search_bid"] }
+            item["NetworkBid"] = b["network_bid"] if b["network_bid"]
+            item
+          end
+
+          client.call("keywordbids", "set", { "KeywordBids" => items })
         end
       end
     end
