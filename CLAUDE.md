@@ -57,7 +57,8 @@ Manages campaigns, ad groups, ads, keywords, images, bid modifiers, sitelinks, c
 - Create callouts via `adextensions/add`, returns IDs
 - Each callout: max **25 characters**
 - Total length: max 132 chars on desktop, 76 on mobile
-- Attach to ad via `AdExtensionIds` array in TextAd (up to 50 IDs)
+- Attach to ad via `AdExtensionIds` array **inside TextAd** (up to 50 IDs)
+- **Cannot add callouts via `ads/update`** — TextAdUpdate doesn't support AdExtensionIds. Must delete and recreate the ad
 - **Always add callouts** — Yandex warns "ad may perform poorly" without them
 
 ### Ads

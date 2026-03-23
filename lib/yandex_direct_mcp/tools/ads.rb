@@ -92,9 +92,11 @@ module YandexDirectMcp
           text_ad["Href"] = args["href"] if args["href"]
           text_ad["AdImageHash"] = args["ad_image_hash"] if args["ad_image_hash"]
           text_ad["SitelinkSetId"] = args["sitelink_set_id"] if args["sitelink_set_id"]
-          text_ad["AdExtensionIds"] = args["ad_extension_ids"] if args["ad_extension_ids"]
 
-          client.call("ads", "update", { "Ads" => [{ "Id" => args["id"], "TextAd" => text_ad }] })
+          ad = { "Id" => args["id"], "TextAd" => text_ad }
+          ad["AdExtensionIds"] = args["ad_extension_ids"] if args["ad_extension_ids"]
+
+          client.call("ads", "update", { "Ads" => [ad] })
         end
 
         registry.register(
