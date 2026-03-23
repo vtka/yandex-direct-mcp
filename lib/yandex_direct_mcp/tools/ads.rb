@@ -43,7 +43,9 @@ module YandexDirectMcp
               text: { type: "string", description: "Текст объявления (до 81 символа)" },
               href: { type: "string", description: "Ссылка на сайт" },
               mobile: { type: "string", enum: %w[YES NO], description: "Мобильное объявление (YES/NO)", default: "NO" },
-              ad_image_hash: { type: "string", description: "Хеш изображения (получить через yandex_direct_adimages_add)" }
+              ad_image_hash: { type: "string", description: "Хеш изображения (получить через yandex_direct_adimages_add)" },
+              sitelink_set_id: { type: "integer", description: "ID набора быстрых ссылок (получить через yandex_direct_sitelinks_add)" },
+              ad_extension_ids: { type: "array", items: { type: "integer" }, description: "ID уточнений (получить через yandex_direct_callouts_add)" }
             },
             required: %w[ad_group_id title text href]
           }
@@ -59,6 +61,8 @@ module YandexDirectMcp
           }
           ad["TextAd"]["Title2"] = args["title2"] if args["title2"]
           ad["TextAd"]["AdImageHash"] = args["ad_image_hash"] if args["ad_image_hash"]
+          ad["TextAd"]["SitelinkSetId"] = args["sitelink_set_id"] if args["sitelink_set_id"]
+          ad["TextAd"]["AdExtensionIds"] = args["ad_extension_ids"] if args["ad_extension_ids"]
 
           client.call("ads", "add", { "Ads" => [ad] })
         end
@@ -74,7 +78,9 @@ module YandexDirectMcp
               title2: { type: "string", description: "Новый второй заголовок" },
               text: { type: "string", description: "Новый текст" },
               href: { type: "string", description: "Новая ссылка" },
-              ad_image_hash: { type: "string", description: "Хеш изображения" }
+              ad_image_hash: { type: "string", description: "Хеш изображения" },
+              sitelink_set_id: { type: "integer", description: "ID набора быстрых ссылок" },
+              ad_extension_ids: { type: "array", items: { type: "integer" }, description: "ID уточнений" }
             },
             required: %w[id]
           }
@@ -85,6 +91,8 @@ module YandexDirectMcp
           text_ad["Text"] = args["text"] if args["text"]
           text_ad["Href"] = args["href"] if args["href"]
           text_ad["AdImageHash"] = args["ad_image_hash"] if args["ad_image_hash"]
+          text_ad["SitelinkSetId"] = args["sitelink_set_id"] if args["sitelink_set_id"]
+          text_ad["AdExtensionIds"] = args["ad_extension_ids"] if args["ad_extension_ids"]
 
           client.call("ads", "update", { "Ads" => [{ "Id" => args["id"], "TextAd" => text_ad }] })
         end

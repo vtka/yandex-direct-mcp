@@ -61,10 +61,39 @@ module YandexDirectMcp
           }
         ) do |client, args|
           client.call("bidmodifiers", "get", {
-            "SelectionCriteria" => { "CampaignIds" => args["campaign_ids"] },
+            "SelectionCriteria" => { "CampaignIds" => args["campaign_ids"], "Levels" => %w[CAMPAIGN] },
             "FieldNames" => %w[Id CampaignId Type],
-            "DemographicsAdjustmentFieldNames" => %w[Gender Age BidModifier]
+            "DemographicsAdjustmentFieldNames" => %w[Id Gender Age BidModifier]
           })
+        end
+
+        registry.register(
+          name: "yandex_direct_bidmodifiers_set",
+          description: "Обновить значение корректировки ставки по ID. Получить ID можно через bidmodifiers_get.",
+          input_schema: {
+            type: "object",
+            properties: {
+              adjustments: {
+                type: "array",
+                description: "Массив обновлений",
+                items: {
+                  type: "object",
+                  properties: {
+                    id: { type: "integer", description: "ID корректировки" },
+                    bid_modifier: { type: "integer", description: "Новый коэффициент (0-1300)" }
+                  },
+                  required: %w[id bid_modifier]
+                }
+              }
+            },
+            required: %w[adjustments]
+          }
+        ) do |client, args|
+          modifiers = args["adjustments"].map do |adj|
+            { "Id" => adj["id"], "BidModifier" => adj["bid_modifier"] }
+          end
+
+          client.call("bidmodifiers", "set", { "BidModifiers" => modifiers })
         end
       end
     end

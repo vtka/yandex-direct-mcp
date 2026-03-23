@@ -102,6 +102,8 @@ module YandexDirectMcp
       Tools::Ads.register(@registry)
       Tools::AdImages.register(@registry)
       Tools::BidModifiers.register(@registry)
+      Tools::Sitelinks.register(@registry)
+      Tools::AdExtensions.register(@registry)
       Tools::Keywords.register(@registry)
       Tools::Reports.register(@registry)
       Tools::Dictionaries.register(@registry)

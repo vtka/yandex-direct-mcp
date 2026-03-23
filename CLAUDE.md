@@ -3,7 +3,7 @@
 ## Project overview
 
 MCP server for Yandex Direct API (JSON v5). Ruby-based, stdio transport.
-Manages campaigns, ad groups, ads, keywords, images, bid modifiers, reports, and dictionaries.
+Manages campaigns, ad groups, ads, keywords, images, bid modifiers, sitelinks, callouts, reports, and dictionaries.
 
 ## Architecture
 
@@ -37,17 +37,34 @@ Manages campaigns, ad groups, ads, keywords, images, bid modifiers, reports, and
 - When cropping vertical images to square, offset ~30% from top preserves title + characters
 
 ### Demographic bid modifiers (BidModifiers service)
-- Max **12 adjustments** per campaign
+- Max **12 adjustments** per campaign (6 age groups × 2 genders = 12, exactly the limit)
 - Every adjustment must specify **both** `Gender` AND `Age` to avoid overlap errors (code 6000)
 - Don't mix "gender-only" and "age-only" adjustments — they intersect and API rejects the whole batch
 - `BidModifier=0` disables the segment, `100`=no change, `200`=double the bid (max 1300)
+- To update existing adjustments, use `bidmodifiers/set` with adjustment IDs (get IDs via `bidmodifiers/get`)
+- `bidmodifiers/get` requires `Levels` parameter in SelectionCriteria (e.g., `["CAMPAIGN"]`), otherwise error 8000
 - Age enums: AGE_0_17, AGE_18_24, AGE_25_34, AGE_35_44, AGE_45_54, AGE_55
 - Gender enums: GENDER_MALE, GENDER_FEMALE
+
+### Sitelinks (быстрые ссылки)
+- Create a set of 1-8 sitelinks via `sitelinks/add`, returns `SitelinkSetId`
+- Each sitelink: Title (max 30 chars), Href, Description (max 60 chars, optional)
+- Links 1-4: total max **66 characters** in titles. Links 5-8: same limit
+- Attach to ad via `SitelinkSetId` field in TextAd
+- **Always add sitelinks** — Yandex warns "ad may perform poorly" without them
+
+### Callouts / Ad Extensions (уточнения)
+- Create callouts via `adextensions/add`, returns IDs
+- Each callout: max **25 characters**
+- Total length: max 132 chars on desktop, 76 on mobile
+- Attach to ad via `AdExtensionIds` array in TextAd (up to 50 IDs)
+- **Always add callouts** — Yandex warns "ad may perform poorly" without them
 
 ### Ads
 - Title: max 56 chars, Title2: max 30 chars, Text: max 81 chars
 - For 18+ content: include "18+" in ad text (required by law), add negative keywords for children's content
 - After creating/updating ads, they need moderation (`ads/moderate`)
+- Ad quality checklist: image + sitelinks + callouts = good quality score. Missing any = warning
 
 ### Regions
 - Standard Russian-speaking set: 225 (Russia), 149 (Belarus), 159 (Kazakhstan), 977
@@ -56,14 +73,17 @@ Manages campaigns, ad groups, ads, keywords, images, bid modifiers, reports, and
 ### Keywords
 - `---autotargeting` is a special system keyword, don't touch it
 - Adapt keywords to the book's actual genre — don't reuse detective keywords for romance, etc.
+- Avoid generic keywords that attract wrong audience (e.g., "электронная книга купить" brings e-reader buyers)
 
 ## Campaign creation checklist
 
 1. Create campaign (name, start_date, daily_budget)
 2. Create ad group (campaign_id, name, region_ids)
 3. Upload image if needed (adimages_add with crop)
-4. Create ad (title, text, href, ad_image_hash)
-5. Add keywords adapted to content genre
-6. Add negative keywords (e.g., children's content for 18+ ads)
-7. Set demographic bid modifiers if targeting specific audience
-8. Send to moderation when ready
+4. Create sitelinks set (sitelinks_add) — required for good quality score
+5. Create callouts (callouts_add) — required for good quality score
+6. Create ad (title, text, href, ad_image_hash, sitelink_set_id, ad_extension_ids)
+7. Add keywords adapted to content genre
+8. Add negative keywords (e.g., children's content for 18+ ads)
+9. Set demographic bid modifiers if targeting specific audience
+10. Send to moderation when ready
