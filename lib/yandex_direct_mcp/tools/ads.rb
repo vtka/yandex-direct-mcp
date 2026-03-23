@@ -42,7 +42,8 @@ module YandexDirectMcp
               title2: { type: "string", description: "Второй заголовок (до 30 символов, опционально)" },
               text: { type: "string", description: "Текст объявления (до 81 символа)" },
               href: { type: "string", description: "Ссылка на сайт" },
-              mobile: { type: "string", enum: %w[YES NO], description: "Мобильное объявление (YES/NO)", default: "NO" }
+              mobile: { type: "string", enum: %w[YES NO], description: "Мобильное объявление (YES/NO)", default: "NO" },
+              ad_image_hash: { type: "string", description: "Хеш изображения (получить через yandex_direct_adimages_add)" }
             },
             required: %w[ad_group_id title text href]
           }
@@ -57,6 +58,7 @@ module YandexDirectMcp
             }
           }
           ad["TextAd"]["Title2"] = args["title2"] if args["title2"]
+          ad["TextAd"]["AdImageHash"] = args["ad_image_hash"] if args["ad_image_hash"]
 
           client.call("ads", "add", { "Ads" => [ad] })
         end
@@ -71,7 +73,8 @@ module YandexDirectMcp
               title: { type: "string", description: "Новый заголовок" },
               title2: { type: "string", description: "Новый второй заголовок" },
               text: { type: "string", description: "Новый текст" },
-              href: { type: "string", description: "Новая ссылка" }
+              href: { type: "string", description: "Новая ссылка" },
+              ad_image_hash: { type: "string", description: "Хеш изображения" }
             },
             required: %w[id]
           }
@@ -81,6 +84,7 @@ module YandexDirectMcp
           text_ad["Title2"] = args["title2"] if args["title2"]
           text_ad["Text"] = args["text"] if args["text"]
           text_ad["Href"] = args["href"] if args["href"]
+          text_ad["AdImageHash"] = args["ad_image_hash"] if args["ad_image_hash"]
 
           client.call("ads", "update", { "Ads" => [{ "Id" => args["id"], "TextAd" => text_ad }] })
         end
