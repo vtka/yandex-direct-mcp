@@ -79,15 +79,72 @@ Manages campaigns, ad groups, ads, keywords, images, bid modifiers, sitelinks, c
 - `keywordbids/set` accepts `KeywordId`, `SearchBid`, `NetworkBid` — values in **microcurrency**
 - Default bid of 1 tenge is too low for any impressions — set at least 20-50 tenge for books niche
 
-## Campaign creation checklist
+### Monitoring (separate repo: vtka/yandex-direct-monitoring)
+- GitHub Actions sends daily/weekly reports to Telegram via bot
+- Currency symbol fetched dynamically from Yandex API (`clients/get` → Currency field)
+- Campaign names cleaned from domain suffixes to prevent Telegram auto-linking
 
-1. Create campaign (name, start_date, daily_budget)
-2. Create ad group (campaign_id, name, region_ids)
-3. Upload image if needed (adimages_add with crop)
-4. Create sitelinks set (sitelinks_add) — required for good quality score
-5. Create callouts (callouts_add) — required for good quality score
-6. Create ad (title, text, href, ad_image_hash, sitelink_set_id, ad_extension_ids)
-7. Add keywords adapted to content genre
-8. Add negative keywords (e.g., children's content for 18+ ads)
-9. Set demographic bid modifiers if targeting specific audience
-10. Send to moderation when ready
+## Campaign creation checklist (MANDATORY)
+
+Every new campaign MUST follow ALL these steps. Skipping any step results in poor ad quality or wasted budget.
+
+### 1. Create campaign
+- `campaigns_add` with name, start_date, daily_budget
+- Budget: minimum 1,300 tenge/day. If user asks for weekly budget, divide by 7
+
+### 2. Create ad group
+- `adgroups_add` with campaign_id, name, region_ids
+- Default regions: `[225, 149, 159, 977]` (Russia, Belarus, Kazakhstan)
+
+### 3. Upload image
+- `adimages_add` with file_path, name, crop parameter
+- Book covers are vertical — use `crop=square` with `crop_offset=30` to capture title + art
+- MUST crop/resize — raw vertical covers will be rejected (min 450×450)
+
+### 4. Create sitelinks
+- `sitelinks_add` with 4 relevant links (e.g., "Читать онлайн", "Все книги автора", genre page, platform page)
+- Each title max 30 chars, links 1-4 total max 66 chars
+- WITHOUT sitelinks the ad gets "may perform poorly" warning (red quality bar)
+
+### 5. Create callouts
+- `callouts_add` with 4 short phrases (e.g., "Бесплатно онлайн", "Новинка 2026", genre tag)
+- Each max 25 chars
+- WITHOUT callouts the ad gets "may perform poorly" warning (red quality bar)
+
+### 6. Create ad (with ALL attachments)
+- `ads_add` with title, title2, text, href, ad_image_hash, sitelink_set_id, ad_extension_ids
+- ALL attachments must be set at creation — callouts (AdExtensionIds) CANNOT be added later via update
+- If you need to add callouts to existing ad: delete it and recreate with all fields
+- For 18+ content: include "18+" in ad text (required by law)
+
+### 7. Add keywords
+- `keywords_add` — adapt to the book's actual genre, don't copy from other campaigns
+- Include: genre-specific terms, platform name, book title, author-related queries
+- Exclude misleading generic keywords
+
+### 8. Add negative keywords
+- `campaigns_update` with negative_keywords
+- For 18+ content: add children-related negative keywords (детские книги, книги для детей, etc.)
+
+### 9. Set keyword bids (CPC)
+- `keywords_set_bids` — set competitive bids for all keywords INCLUDING autotargeting
+- **Default 1 tenge bid = zero impressions.** Must set 10-50 tenge depending on niche
+- Books niche: 10-30 tenge is a reasonable starting point
+- Bids are in **microcurrency** (10 tenge = 10,000,000)
+
+### 10. Set demographic targeting
+- `bidmodifiers_demographics` — set ALL 12 gender×age combinations to avoid overlap errors
+- Boost target audience (e.g., women 25-44 → BidModifier 200)
+- Lower non-target (e.g., men → BidModifier 10)
+- Disable under-17 (BidModifier 0) for 18+ content
+- Must specify BOTH gender AND age in every adjustment
+
+### 11. Verify campaign quality
+- Check ad status via `ads_get` — should be ACCEPTED after moderation
+- Check campaign state via `campaigns_get` — should be ON
+- Verify: image attached, sitelinks attached, callouts attached, bids set above minimum
+- All these together = green quality bar in Yandex Direct UI
+
+### 12. Send to moderation
+- `ads_moderate` when everything is ready
+- Moderation takes 1-3 days for new campaigns
